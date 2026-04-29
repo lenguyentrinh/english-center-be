@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/english-center-ms?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh
+    username: root
+    password: Lethinguyentrinh154@@
 
   jpa:
     hibernate:
