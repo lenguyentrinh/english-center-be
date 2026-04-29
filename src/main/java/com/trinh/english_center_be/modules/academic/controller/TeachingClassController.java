@@ -4,6 +4,8 @@ import com.trinh.english_center_be.modules.academic.dto.TeachingClassRequest;
 import com.trinh.english_center_be.modules.academic.dto.TeachingClassResponse;
 import com.trinh.english_center_be.modules.academic.service.TeachingClassService;
 import java.util.List;
+
+import com.trinh.english_center_be.shared.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,28 +26,64 @@ public class TeachingClassController {
     private final TeachingClassService teachingClassService;
 
     @GetMapping
-    public ResponseEntity<List<TeachingClassResponse>> getAll() {
-        return ResponseEntity.ok(teachingClassService.findAll());
+    public ResponseEntity<ApiResponse<List<TeachingClassResponse>>> getAll() {
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Get all teaching classes successfully",
+                        teachingClassService.findAll()
+                )
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeachingClassResponse> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(teachingClassService.findById(id));
+    public ResponseEntity<ApiResponse<TeachingClassResponse>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Get teaching class successfully",
+                        teachingClassService.findById(id)
+                )
+        );
     }
 
     @PostMapping
-    public ResponseEntity<TeachingClassResponse> create(@RequestBody TeachingClassRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(teachingClassService.create(request));
+    public ResponseEntity<ApiResponse<TeachingClassResponse>> create(
+            @RequestBody TeachingClassRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(
+                        201,
+                        "Create teaching class successfully",
+                        teachingClassService.create(request)
+                ));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TeachingClassResponse> update(@PathVariable Long id, @RequestBody TeachingClassRequest request) {
-        return ResponseEntity.ok(teachingClassService.update(id, request));
+    public ResponseEntity<ApiResponse<TeachingClassResponse>> update(
+            @PathVariable Long id,
+            @RequestBody TeachingClassRequest request
+    ) {
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Update teaching class successfully",
+                        teachingClassService.update(id, request)
+                )
+        );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+
         teachingClassService.delete(id);
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Delete teaching class successfully",
+                        null
+                )
+        );
     }
 }
