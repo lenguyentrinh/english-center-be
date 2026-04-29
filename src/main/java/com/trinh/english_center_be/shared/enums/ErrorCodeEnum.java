@@ -39,7 +39,12 @@ public enum ErrorCodeEnum {
             "INTERNAL_SERVER_ERROR",
             HttpStatus.INTERNAL_SERVER_ERROR,
             "Something went wrong"
-    );
+    ),
+
+    DATABASE_ERROR(
+            "DATABASE_500_01",
+            HttpStatus.NOT_FOUND,
+            "Database operation failed");
 
     private final String code;
     private final HttpStatus status;
