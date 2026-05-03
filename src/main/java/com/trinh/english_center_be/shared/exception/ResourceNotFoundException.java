@@ -7,7 +7,7 @@ public class ResourceNotFoundException extends BusinessException{
         super(ErrorCodeEnum.RESOURCE_NOT_FOUND.getCode(), ErrorCodeEnum.RESOURCE_NOT_FOUND.getMessage(), ErrorCodeEnum.RESOURCE_NOT_FOUND.getStatus());
     }
 
-    public ResourceNotFoundException(String code, String message, int status) {
-        super(ErrorCodeEnum.RESOURCE_NOT_FOUND.getCode(), ErrorCodeEnum.RESOURCE_NOT_FOUND.getMessage(), ErrorCodeEnum.RESOURCE_NOT_FOUND.getStatus());
+    public ResourceNotFoundException( String message) {
+        super(ErrorCodeEnum.RESOURCE_NOT_FOUND.getCode(), message, ErrorCodeEnum.RESOURCE_NOT_FOUND.getStatus());
     }
 }
