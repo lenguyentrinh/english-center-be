@@ -8,9 +8,11 @@ import com.trinh.english_center_be.shared.exception.ResourceNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TeachingClassServiceImpl implements TeachingClassService {
 
     private final TeachingClassRepository teachingClassRepository;
@@ -34,6 +36,7 @@ public class TeachingClassServiceImpl implements TeachingClassService {
     }
 
     @Override
+    @Transactional
     public TeachingClassResponse create(TeachingClassRequest request) {
 
         TeachingClass teachingClass = TeachingClass.builder()
@@ -50,6 +53,7 @@ public class TeachingClassServiceImpl implements TeachingClassService {
     }
 
     @Override
+    @Transactional
     public TeachingClassResponse update(Long id, TeachingClassRequest request) {
 
         TeachingClass teachingClass = teachingClassRepository.findById(id)
@@ -69,6 +73,7 @@ public class TeachingClassServiceImpl implements TeachingClassService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
 
         TeachingClass teachingClass = teachingClassRepository.findById(id)

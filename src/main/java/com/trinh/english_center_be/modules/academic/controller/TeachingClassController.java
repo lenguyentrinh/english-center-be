@@ -3,9 +3,9 @@ package com.trinh.english_center_be.modules.academic.controller;
 import com.trinh.english_center_be.modules.academic.dto.TeachingClassRequest;
 import com.trinh.english_center_be.modules.academic.dto.TeachingClassResponse;
 import com.trinh.english_center_be.modules.academic.service.TeachingClassService;
-import java.util.List;
-
 import com.trinh.english_center_be.shared.response.ApiResponse;
+import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +49,7 @@ public class TeachingClassController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<TeachingClassResponse>> create(
-            @RequestBody TeachingClassRequest request
+            @Valid @RequestBody TeachingClassRequest request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(
@@ -62,7 +62,7 @@ public class TeachingClassController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<TeachingClassResponse>> update(
             @PathVariable Long id,
-            @RequestBody TeachingClassRequest request
+            @Valid @RequestBody TeachingClassRequest request
     ) {
         return ResponseEntity.ok(
                 new ApiResponse<>(
@@ -75,9 +75,7 @@ public class TeachingClassController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-
         teachingClassService.delete(id);
-
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
