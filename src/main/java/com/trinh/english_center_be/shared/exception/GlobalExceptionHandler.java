@@ -1,29 +1,81 @@
 package com.trinh.english_center_be.shared.exception;
 
 import com.trinh.english_center_be.shared.enums.ErrorCodeEnum;
+import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // =========================
+    // Business Exception
+    // =========================
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> handleBusiness(BusinessException ex){
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                        .code(ex.getCode())
-                        .status(ex.getStatus())
-                        .message(ex.getMessage())
-                        .build();
-        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    public ResponseEntity<ErrorResponse> handleBusiness(
+            BusinessException ex,
+            HttpServletRequest request
+    ) {
+
+        log.error("BusinessException: {}", ex.getMessage());
+
+        ErrorResponse response = ErrorResponse.builder()
+                .code(ex.getCode())
+                .status(ex.getStatus())
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(ex.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request
+    ) {
+        ErrorCodeEnum error = ErrorCodeEnum.VALIDATION_ERROR;
+        Map<String, String> fieldErrors = new LinkedHashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(fe -> fieldErrors.put(fe.getField(), fe.getDefaultMessage()));
+
+        ErrorResponse response = ErrorResponse.builder()
+                .code(error.getCode())
+                .status(error.getStatus())
+                .message(error.getMessage())
+                .errors(fieldErrors)
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(error.getStatus()).body(response);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleUnknown(Exception ex){
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .code(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
-                .status(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getStatus())
-                .message(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getMessage())
+    public ResponseEntity<ErrorResponse> handleUnknown(
+            Exception ex,
+            HttpServletRequest request
+    ) {
+
+        log.error("Unhandled exception: ", ex);
+
+        ErrorCodeEnum error = ErrorCodeEnum.INTERNAL_SERVER_ERROR;
+
+        ErrorResponse response = ErrorResponse.builder()
+                .code(error.getCode())
+                .status(error.getStatus())
+                .message(error.getMessage())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
                 .build();
-        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+
+        return ResponseEntity.status(error.getStatus()).body(response);
     }
 }
