@@ -12,6 +12,7 @@ import com.trinh.english_center_be.shared.enums.UserStatus;
 import com.trinh.english_center_be.shared.exception.InvalidCredentialException;
 import com.trinh.english_center_be.shared.exception.ResourceNotFoundException;
 import com.trinh.english_center_be.shared.exception.UnauthorizedException;
+import com.trinh.english_center_be.shared.exception.UsernameExistsException;
 import com.trinh.english_center_be.shared.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,7 +51,9 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public void signup(SignupRequest request) {
-        if(userService.existByUserName(request.username())) throw new RuntimeException(StringUtil.USERNAME_EXITS);
+        if (userService.existByUserName(request.username())) {
+            throw new UsernameExistsException();
+        }
 
         Role roleDefault = roleService.findRoleByRoleName(Roles.STUDENT).orElseThrow(()-> new ResourceNotFoundException(StringUtil.STUDENT_ROLE));
 

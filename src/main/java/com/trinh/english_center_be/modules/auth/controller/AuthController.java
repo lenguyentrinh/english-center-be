@@ -5,7 +5,9 @@ import com.trinh.english_center_be.modules.auth.dto.SignupRequest;
 import com.trinh.english_center_be.modules.auth.service.AuthService;
 import com.trinh.english_center_be.shared.response.ApiResponse;
 import jakarta.validation.Valid;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+    @Value("${cookie.secure:true}")
+    private boolean cookieSecure;
+
+    @Value("${jwt.expiration-ms}")
+    private long jwtExpirationMs;
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Void>> signup(@RequestBody @Valid SignupRequest request){
@@ -31,10 +38,10 @@ public class AuthController {
 
         ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", token)
                 .httpOnly(true)
-                .secure(false)
+                .secure(cookieSecure)
                 .sameSite("Lax")
                 .path("/")
-                .maxAge(3600)
+                .maxAge(Duration.ofMillis(jwtExpirationMs))
                 .build();
 
 
@@ -47,7 +54,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> logout(){
         ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(cookieSecure)
                 .sameSite("Lax")
                 .path("/")
                 .maxAge(0)

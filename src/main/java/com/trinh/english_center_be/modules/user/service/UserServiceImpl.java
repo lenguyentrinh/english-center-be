@@ -13,12 +13,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     @Override
     public Optional<User> findByUsername(String username) {
-        return userRepository.findUsername(username);
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public boolean existByUserName(String username) {
-        return userRepository.existByUsername(username);
+        return userRepository.existsByUsername(username);
     }
 
     @Override
