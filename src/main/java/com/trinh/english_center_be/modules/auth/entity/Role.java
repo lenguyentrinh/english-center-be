@@ -1,11 +1,7 @@
 package com.trinh.english_center_be.modules.auth.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.trinh.english_center_be.shared.enums.Roles;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +21,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 30)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, unique = true, length = 30)
+    private Roles role;
 }
