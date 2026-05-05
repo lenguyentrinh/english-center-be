@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ public class TeachingClassController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TeachingClassResponse>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(
                 new ApiResponse<>(
@@ -48,6 +50,7 @@ public class TeachingClassController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TeachingClassResponse>> create(
             @Valid @RequestBody TeachingClassRequest request
     ) {
@@ -60,6 +63,7 @@ public class TeachingClassController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TeachingClassResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody TeachingClassRequest request
@@ -74,6 +78,7 @@ public class TeachingClassController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         teachingClassService.delete(id);
         return ResponseEntity.ok(
