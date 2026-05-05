@@ -1,6 +1,6 @@
-package com.trinh.english_center_be.modules.auth.Repository;
+package com.trinh.english_center_be.modules.user.Repository;
 
-import com.trinh.english_center_be.modules.auth.entity.User;
+import com.trinh.english_center_be.modules.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

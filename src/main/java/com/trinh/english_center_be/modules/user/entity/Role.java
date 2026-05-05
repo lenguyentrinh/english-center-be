@@ -1,4 +1,4 @@
-package com.trinh.english_center_be.modules.auth.entity;
+package com.trinh.english_center_be.modules.user.entity;
 
 import com.trinh.english_center_be.shared.enums.Roles;
 import jakarta.persistence.*;

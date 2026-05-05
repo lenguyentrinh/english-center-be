@@ -1,4 +1,4 @@
-package com.trinh.english_center_be.modules.auth.entity;
+package com.trinh.english_center_be.modules.user.entity;
 
 import com.trinh.english_center_be.shared.enums.UserStatus;
 import jakarta.persistence.*;
@@ -41,7 +41,7 @@ public class User {
     private String phone;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @Enumerated(EnumType.STRING)

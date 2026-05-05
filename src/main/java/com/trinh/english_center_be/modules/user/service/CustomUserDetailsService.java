@@ -1,7 +1,7 @@
-package com.trinh.english_center_be.modules.auth.service;
+package com.trinh.english_center_be.modules.user.service;
 
-import com.trinh.english_center_be.modules.auth.Repository.UserRepository;
-import com.trinh.english_center_be.modules.auth.entity.User;
+import com.trinh.english_center_be.modules.user.Repository.UserRepository;
+import com.trinh.english_center_be.modules.user.entity.User;
 import com.trinh.english_center_be.shared.enums.UserStatus;
 import com.trinh.english_center_be.shared.util.StringUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 ));
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
-                .password(user.getPassword())
                 .authorities(new SimpleGrantedAuthority(user.getRole().getRole().name()))
                 .accountLocked(user.getStatus()!=null && user.getStatus()== UserStatus.LOCKED)
                 .disabled(user.getStatus()!=null && user.getStatus() != UserStatus.ACTIVE)
