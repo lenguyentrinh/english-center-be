@@ -22,5 +22,7 @@ public class ErrorResponse {
 
     private String path;
 
+    private String origin;
+
     private Map<String, String> errors;
 }

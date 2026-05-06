@@ -16,10 +16,10 @@ import com.trinh.english_center_be.shared.exception.UsernameExistsException;
 import com.trinh.english_center_be.shared.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,11 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public String authenticate(LoginRequest loginRequest) {
         var user = userService.findByUsername(loginRequest.username())
-                .orElseThrow(()-> new UsernameNotFoundException(StringUtil.USERNAME_NOT_FOUND));
+                .orElseThrow(() -> new InvalidCredentialException("Incorrect username", "auth.username"));
+
+        if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
+            throw new InvalidCredentialException("Incorrect password", "auth.password");
+        }
 
         if(user.getStatus() != UserStatus.ACTIVE) throw new UnauthorizedException(StringUtil.USER_ACCOUNT_NOT_ACTIVE);
 
@@ -44,8 +48,10 @@ public class AuthServiceImpl implements AuthService{
                     new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
 
             return jwtTokenProvider.generateToken(authentication);
+        } catch (BadCredentialsException ex) {
+            throw new InvalidCredentialException("Incorrect password", "auth.password");
         } catch (AuthenticationException ex) {
-            throw new InvalidCredentialException();
+            throw new UnauthorizedException("Authentication failed");
         }
     }
 

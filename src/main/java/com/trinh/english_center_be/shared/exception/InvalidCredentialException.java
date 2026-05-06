@@ -13,4 +13,13 @@ public class InvalidCredentialException extends BusinessException {
     public InvalidCredentialException(String message) {
         super(ErrorCodeEnum.INVALID_CREDENTIAL.getCode(), message, ErrorCodeEnum.INVALID_CREDENTIAL.getStatus());
     }
+
+    public InvalidCredentialException(String message, String origin) {
+        super(
+                ErrorCodeEnum.INVALID_CREDENTIAL.getCode(),
+                message,
+                ErrorCodeEnum.INVALID_CREDENTIAL.getStatus(),
+                origin
+        );
+    }
 }
