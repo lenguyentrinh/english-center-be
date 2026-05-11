@@ -1,6 +1,6 @@
 package com.trinh.english_center_be.modules.student.entity;
 
-import com.trinh.english_center_be.modules.auth.entity.User;
+import com.trinh.english_center_be.modules.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

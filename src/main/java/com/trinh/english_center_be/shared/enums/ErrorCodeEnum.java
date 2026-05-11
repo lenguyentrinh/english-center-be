@@ -50,7 +50,13 @@ public enum ErrorCodeEnum {
     DATABASE_ERROR(
             "DATABASE_500_01",
             HttpStatus.INTERNAL_SERVER_ERROR,
-            "Database operation failed");
+            "Database operation failed"),
+
+    USERNAME_EXISTS(
+            "AUTH_400_01",
+            HttpStatus.BAD_REQUEST,
+            "Username already exists"
+    );
 
     private final String code;
     private final HttpStatus status;

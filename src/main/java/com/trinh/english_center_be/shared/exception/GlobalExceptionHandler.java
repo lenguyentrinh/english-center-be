@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +34,7 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
+                .origin(ex.getOrigin() != null ? ex.getOrigin() : "business")
                 .build();
 
         return ResponseEntity.status(ex.getStatus()).body(response);
@@ -53,6 +56,26 @@ public class GlobalExceptionHandler {
                 .errors(fieldErrors)
                 .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
+                .origin("validation")
+                .build();
+
+        return ResponseEntity.status(error.getStatus()).body(response);
+    }
+
+    @ExceptionHandler({AuthorizationDeniedException.class, AccessDeniedException.class})
+    public ResponseEntity<ErrorResponse> handleAuthorizationDenied(
+            Exception ex,
+            HttpServletRequest request
+    ) {
+        ErrorCodeEnum error = ErrorCodeEnum.FORBIDDEN;
+
+        ErrorResponse response = ErrorResponse.builder()
+                .code(error.getCode())
+                .status(error.getStatus())
+                .message("Permission denied: your role is not allowed for this action")
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .origin("authorization")
                 .build();
 
         return ResponseEntity.status(error.getStatus()).body(response);
@@ -74,6 +97,7 @@ public class GlobalExceptionHandler {
                 .message(error.getMessage())
                 .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
+                .origin(ex.getClass().getSimpleName())
                 .build();
 
         return ResponseEntity.status(error.getStatus()).body(response);
