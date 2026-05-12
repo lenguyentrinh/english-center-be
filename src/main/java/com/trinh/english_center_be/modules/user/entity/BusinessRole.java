@@ -1,8 +1,9 @@
 package com.trinh.english_center_be.modules.user.entity;
 
-import com.trinh.english_center_be.shared.enums.Roles;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -13,22 +14,18 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "business_roles")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-public class Role {
+public class BusinessRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", unique = true, length = 30)
-    private Roles role;
 
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
@@ -39,6 +36,15 @@ public class Role {
     @Builder.Default
     @Column(name = "active", nullable = false)
     private Boolean active = true;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "business_role_roles",
+            joinColumns = @JoinColumn(name = "business_role_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
