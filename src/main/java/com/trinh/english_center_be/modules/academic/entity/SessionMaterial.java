@@ -1,5 +1,6 @@
 package com.trinh.english_center_be.modules.academic.entity;
 
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,7 +25,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SessionMaterial {
+public class SessionMaterial extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +46,4 @@ public class SessionMaterial {
 
     @Column(name = "uploaded_by")
     private Long uploadedBy;
-
-    @CreationTimestamp
-    @Column(name = "uploaded_at", updatable = false)
-    private LocalDateTime uploadedAt;
 }

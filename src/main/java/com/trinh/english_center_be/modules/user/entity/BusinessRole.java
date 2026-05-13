@@ -1,5 +1,6 @@
 package com.trinh.english_center_be.modules.user.entity;
 
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -20,8 +21,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
-public class BusinessRole {
+@EqualsAndHashCode(of = "id", callSuper = false)
+public class BusinessRole extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,20 +38,6 @@ public class BusinessRole {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "business_role_roles",
-            joinColumns = @JoinColumn(name = "business_role_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    @Builder.Default
+    @OneToMany(mappedBy = "businessRole", fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

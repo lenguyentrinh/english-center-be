@@ -1,6 +1,7 @@
 package com.trinh.english_center_be.modules.academic.entity;
 
 import com.trinh.english_center_be.modules.teacher.entity.Teacher;
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClassTeacher {
+public class ClassTeacher extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

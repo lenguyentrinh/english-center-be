@@ -2,6 +2,7 @@ package com.trinh.english_center_be.modules.attendance.entity;
 
 import com.trinh.english_center_be.modules.academic.entity.ClassSession;
 import com.trinh.english_center_be.modules.student.entity.Student;
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,7 +27,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Attendance {
+public class Attendance extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +46,4 @@ public class Attendance {
 
     @Column(name = "note", length = 255)
     private String note;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
 }

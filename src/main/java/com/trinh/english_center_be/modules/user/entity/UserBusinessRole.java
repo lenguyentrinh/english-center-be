@@ -1,5 +1,6 @@
 package com.trinh.english_center_be.modules.user.entity;
 
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserBusinessRole {
+public class UserBusinessRole extends BaseEntity {
 
     @EmbeddedId
     private UserBusinessRoleId id;
@@ -30,8 +31,4 @@ public class UserBusinessRole {
     @MapsId("businessRoleId")
     @JoinColumn(name = "business_role_id")
     private BusinessRole businessRole;
-
-    @CreationTimestamp
-    @Column(name = "assigned_at", updatable = false)
-    private LocalDateTime assignedAt;
 }

@@ -1,6 +1,7 @@
 package com.trinh.english_center_be.modules.student.entity;
 
 import com.trinh.english_center_be.modules.user.entity.User;
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Student {
+public class Student extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,4 +49,10 @@ public class Student {
 
     @Column(name = "parent_phone", length = 20)
     private String parentPhone;
+
+    @Column(name = "entry_level", length = 30)
+    private String entryLevel;
+
+    @Column(name = "prerequisites_completed", columnDefinition = "TINYINT DEFAULT 0")
+    private Boolean prerequisitesCompleted;
 }
