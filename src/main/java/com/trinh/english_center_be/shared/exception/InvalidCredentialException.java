@@ -1,24 +1,24 @@
 package com.trinh.english_center_be.shared.exception;
 
-import com.trinh.english_center_be.shared.enums.ErrorCodeEnum;
+import com.trinh.english_center_be.shared.enums.ErrorCode;
 
 public class InvalidCredentialException extends BusinessException {
     public InvalidCredentialException() {
         super(
-                ErrorCodeEnum.INVALID_CREDENTIAL.getCode(),
-                ErrorCodeEnum.INVALID_CREDENTIAL.getMessage(),
-                ErrorCodeEnum.INVALID_CREDENTIAL.getStatus());
+                ErrorCode.INVALID_CREDENTIAL.getCode(),
+                ErrorCode.INVALID_CREDENTIAL.getMessage(),
+                ErrorCode.INVALID_CREDENTIAL.getStatus());
     }
 
     public InvalidCredentialException(String message) {
-        super(ErrorCodeEnum.INVALID_CREDENTIAL.getCode(), message, ErrorCodeEnum.INVALID_CREDENTIAL.getStatus());
+        super(ErrorCode.INVALID_CREDENTIAL.getCode(), message, ErrorCode.INVALID_CREDENTIAL.getStatus());
     }
 
     public InvalidCredentialException(String message, String origin) {
         super(
-                ErrorCodeEnum.INVALID_CREDENTIAL.getCode(),
+                ErrorCode.INVALID_CREDENTIAL.getCode(),
                 message,
-                ErrorCodeEnum.INVALID_CREDENTIAL.getStatus(),
+                ErrorCode.INVALID_CREDENTIAL.getStatus(),
                 origin
         );
     }

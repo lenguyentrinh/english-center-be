@@ -6,6 +6,8 @@ import com.trinh.english_center_be.modules.academic.entity.TeachingClass;
 import com.trinh.english_center_be.modules.academic.repository.TeachingClassRepository;
 import com.trinh.english_center_be.shared.exception.ResourceNotFoundException;
 import java.util.List;
+
+import com.trinh.english_center_be.shared.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,7 @@ public class TeachingClassServiceImpl implements TeachingClassService {
     public TeachingClassResponse findById(Long id) {
         TeachingClass teachingClass = teachingClassRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Class not found with id: " + id)
+                        new ResourceNotFoundException(String.format(StringUtil.CLASS_NOT_FOUND_WITH_ID,id))
                 );
 
         return toResponse(teachingClass);
@@ -42,7 +44,6 @@ public class TeachingClassServiceImpl implements TeachingClassService {
         TeachingClass teachingClass = TeachingClass.builder()
                 .code(request.code())
                 .name(request.name())
-                .courseId(request.courseId())
                 .startDate(request.startDate())
                 .endDate(request.endDate())
                 .maxStudent(request.maxStudent())
@@ -58,12 +59,11 @@ public class TeachingClassServiceImpl implements TeachingClassService {
 
         TeachingClass teachingClass = teachingClassRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Class not found with id: " + id)
+                        new ResourceNotFoundException(String.format(StringUtil.CLASS_NOT_FOUND_WITH_ID,id))
                 );
 
         teachingClass.setCode(request.code());
         teachingClass.setName(request.name());
-        teachingClass.setCourseId(request.courseId());
         teachingClass.setStartDate(request.startDate());
         teachingClass.setEndDate(request.endDate());
         teachingClass.setMaxStudent(request.maxStudent());
@@ -78,7 +78,7 @@ public class TeachingClassServiceImpl implements TeachingClassService {
 
         TeachingClass teachingClass = teachingClassRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Class not found with id: " + id)
+                        new ResourceNotFoundException(String.format(StringUtil.CLASS_NOT_FOUND_WITH_ID,id))
                 );
 
         teachingClassRepository.delete(teachingClass);
@@ -89,7 +89,6 @@ public class TeachingClassServiceImpl implements TeachingClassService {
                 teachingClass.getId(),
                 teachingClass.getCode(),
                 teachingClass.getName(),
-                teachingClass.getCourseId(),
                 teachingClass.getStartDate(),
                 teachingClass.getEndDate(),
                 teachingClass.getMaxStudent(),

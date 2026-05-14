@@ -5,4 +5,5 @@ public class StringUtil {
     public static final String USER_ACCOUNT_NOT_ACTIVE = "User account is not active";
     public static final String USERNAME_EXITS= "Username already exists";
     public static final String STUDENT_ROLE = "Student role not found";
+    public static final String CLASS_NOT_FOUND_WITH_ID="Class not found with id: %s";
 }

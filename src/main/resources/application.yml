@@ -9,15 +9,14 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
-jwt:
-  secret: ${JWT_SECRET:lethinguyentrinh}
-  expiration-ms: ${JWT_EXPIRATION_MS:3600000}
-
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
+    show-sql: true
 
   jackson:
     time-zone: ${TIMEZONE:Asia/Ho_Chi_Minh}
@@ -25,25 +24,6 @@ jwt:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-    properties:
-      hibernate:
-        format_sql: false
+jwt:
+  secret: ${JWT_SECRET:lethinguyentrinh}
+  expiration-ms: ${JWT_EXPIRATION_MS:3600000}

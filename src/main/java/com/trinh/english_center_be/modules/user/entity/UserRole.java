@@ -1,5 +1,6 @@
 package com.trinh.english_center_be.modules.user.entity;
 
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserRole {
+public class UserRole extends BaseEntity {
 
     @EmbeddedId
     private UserRoleId id;

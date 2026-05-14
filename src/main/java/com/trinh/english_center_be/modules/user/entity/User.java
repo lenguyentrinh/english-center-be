@@ -1,5 +1,6 @@
 package com.trinh.english_center_be.modules.user.entity;
 
+import com.trinh.english_center_be.shared.BaseEntity;
 import com.trinh.english_center_be.shared.enums.UserStatus;
 import jakarta.persistence.*;
 
@@ -19,7 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,12 +48,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
     private UserStatus status;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

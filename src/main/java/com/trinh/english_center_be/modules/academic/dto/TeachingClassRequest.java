@@ -1,6 +1,10 @@
 package com.trinh.english_center_be.modules.academic.dto;
 
+import com.trinh.english_center_be.shared.enums.ClassStatus;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
+
 import java.time.LocalDate;
 
 public record TeachingClassRequest(
@@ -13,10 +17,8 @@ public record TeachingClassRequest(
         @Size(max = 255, message = "Name must be at most 255 characters")
         String name,
 
-        @NotNull(message = "CourseId must not be null")
-        Long courseId,
-
         @NotNull(message = "Start date must not be null")
+        @FutureOrPresent(message = "Start date must be in the present or future")
         LocalDate startDate,
 
         @NotNull(message = "End date must not be null")
@@ -27,7 +29,6 @@ public record TeachingClassRequest(
         Integer maxStudent,
 
         @NotBlank(message = "Status must not be blank")
-        @Pattern(regexp = "OPEN|ACTIVE|CLOSED", message = "Status must be OPEN, ACTIVE, or CLOSED")
-        String status
+        ClassStatus status
 ) {
 }

@@ -1,6 +1,7 @@
 package com.trinh.english_center_be.modules.academic.entity;
 
 import com.trinh.english_center_be.modules.student.entity.Student;
+import com.trinh.english_center_be.shared.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +26,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Enrollment {
+public class Enrollment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +45,16 @@ public class Enrollment {
 
     @Column(name = "status", length = 20)
     private String status;
+
+    @Column(name = "age_eligible", columnDefinition = "TINYINT")
+    private Boolean ageEligible;
+
+    @Column(name = "entry_level_eligible", columnDefinition = "TINYINT")
+    private Boolean entryLevelEligible;
+
+    @Column(name = "prerequisites_eligible", columnDefinition = "TINYINT")
+    private Boolean prerequisitesEligible;
+
+    @Column(name = "eligibility_check_date")
+    private LocalDateTime eligibilityCheckDate;
 }

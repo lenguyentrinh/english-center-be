@@ -1,5 +1,6 @@
 package com.trinh.english_center_be.modules.user.entity;
 
+import com.trinh.english_center_be.shared.BaseEntity;
 import com.trinh.english_center_be.shared.enums.Roles;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -19,8 +20,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
-public class Role {
+@EqualsAndHashCode(of = "id", callSuper = false)
+public class Role extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +41,7 @@ public class Role {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_role_id")
+    private BusinessRole businessRole;
 }
