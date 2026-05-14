@@ -11,7 +11,7 @@ public record SignupRequest(
         String username,
         
         @NotBlank 
-        @Size(min = 6, max = 100)
+        @Size(min = 6, max = 50)
         @Pattern(
                 regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$",
                 message = "Password must contain at least one letter and one number"
@@ -23,9 +23,9 @@ public record SignupRequest(
         String email,
         
         @NotBlank
-        @Size(min = 5, max = 100)
+        @Size(min = 5, max = 50)
         String fullName,
         
-        @Size(max = 20)
+        @Size(max = 10)
         String phone
 ) {}

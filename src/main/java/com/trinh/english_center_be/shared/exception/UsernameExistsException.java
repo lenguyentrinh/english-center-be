@@ -1,13 +1,13 @@
 package com.trinh.english_center_be.shared.exception;
 
-import com.trinh.english_center_be.shared.enums.ErrorCodeEnum;
+import com.trinh.english_center_be.shared.enums.ErrorCodeType;
 
 public class UsernameExistsException extends BusinessException {
     public UsernameExistsException() {
         super(
-                ErrorCodeEnum.USERNAME_EXISTS.getCode(),
-                ErrorCodeEnum.USERNAME_EXISTS.getMessage(),
-                ErrorCodeEnum.USERNAME_EXISTS.getStatus()
+                ErrorCodeType.USERNAME_EXISTS.getCode(),
+                ErrorCodeType.USERNAME_EXISTS.getMessage(),
+                ErrorCodeType.USERNAME_EXISTS.getStatus()
         );
     }
 }

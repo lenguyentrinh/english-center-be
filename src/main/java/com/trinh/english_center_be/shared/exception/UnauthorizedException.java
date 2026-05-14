@@ -1,16 +1,16 @@
 package com.trinh.english_center_be.shared.exception;
 
-import com.trinh.english_center_be.shared.enums.ErrorCodeEnum;
+import com.trinh.english_center_be.shared.enums.ErrorCodeType;
 
 public class UnauthorizedException extends BusinessException {
     public UnauthorizedException() {
         super(
-                ErrorCodeEnum.UNAUTHORIZED.getCode(),
-                ErrorCodeEnum.UNAUTHORIZED.getMessage(),
-                ErrorCodeEnum.UNAUTHORIZED.getStatus());
+                ErrorCodeType.UNAUTHORIZED.getCode(),
+                ErrorCodeType.UNAUTHORIZED.getMessage(),
+                ErrorCodeType.UNAUTHORIZED.getStatus());
     }
 
     public UnauthorizedException(String message) {
-        super(ErrorCodeEnum.UNAUTHORIZED.getCode(), message, ErrorCodeEnum.UNAUTHORIZED.getStatus());
+        super(ErrorCodeType.UNAUTHORIZED.getCode(), message, ErrorCodeType.UNAUTHORIZED.getStatus());
     }
 }

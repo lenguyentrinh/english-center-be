@@ -1,13 +1,13 @@
 package com.trinh.english_center_be.shared.exception;
 
-import com.trinh.english_center_be.shared.enums.ErrorCodeEnum;
+import com.trinh.english_center_be.shared.enums.ErrorCodeType;
 
 public class ResourceNotFoundException extends BusinessException{
     public ResourceNotFoundException() {
-        super(ErrorCodeEnum.RESOURCE_NOT_FOUND.getCode(), ErrorCodeEnum.RESOURCE_NOT_FOUND.getMessage(), ErrorCodeEnum.RESOURCE_NOT_FOUND.getStatus());
+        super(ErrorCodeType.RESOURCE_NOT_FOUND.getCode(), ErrorCodeType.RESOURCE_NOT_FOUND.getMessage(), ErrorCodeType.RESOURCE_NOT_FOUND.getStatus());
     }
 
     public ResourceNotFoundException( String message) {
-        super(ErrorCodeEnum.RESOURCE_NOT_FOUND.getCode(), message, ErrorCodeEnum.RESOURCE_NOT_FOUND.getStatus());
+        super(ErrorCodeType.RESOURCE_NOT_FOUND.getCode(), message, ErrorCodeType.RESOURCE_NOT_FOUND.getStatus());
     }
 }
