@@ -1,10 +1,12 @@
 package com.trinh.english_center_be.shared.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum ErrorCodeEnum {
+@AllArgsConstructor
+public enum ErrorCode {
     FORBIDDEN(
             "AUTH_403_01",
             HttpStatus.FORBIDDEN,
@@ -61,10 +63,4 @@ public enum ErrorCodeEnum {
     private final String code;
     private final HttpStatus status;
     private final String message;
-
-    ErrorCodeEnum(String code, HttpStatus status, String message) {
-        this.code = code;
-        this.status = status;
-        this.message = message;
-    }
 }

@@ -1,6 +1,6 @@
 package com.trinh.english_center_be.shared.exception;
 
-import com.trinh.english_center_be.shared.enums.ErrorCodeEnum;
+import com.trinh.english_center_be.shared.enums.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex,
             HttpServletRequest request
     ) {
-        ErrorCodeEnum error = ErrorCodeEnum.VALIDATION_ERROR;
+        ErrorCode error = ErrorCode.VALIDATION_ERROR;
         Map<String, String> fieldErrors = new LinkedHashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(fe -> fieldErrors.put(fe.getField(), fe.getDefaultMessage()));
 
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
             Exception ex,
             HttpServletRequest request
     ) {
-        ErrorCodeEnum error = ErrorCodeEnum.FORBIDDEN;
+        ErrorCode error = ErrorCode.FORBIDDEN;
 
         ErrorResponse response = ErrorResponse.builder()
                 .code(error.getCode())
@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
 
         log.error("Unhandled exception: ", ex);
 
-        ErrorCodeEnum error = ErrorCodeEnum.INTERNAL_SERVER_ERROR;
+        ErrorCode error = ErrorCode.INTERNAL_SERVER_ERROR;
 
         ErrorResponse response = ErrorResponse.builder()
                 .code(error.getCode())

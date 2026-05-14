@@ -57,7 +57,4 @@ public class Enrollment extends BaseEntity {
 
     @Column(name = "eligibility_check_date")
     private LocalDateTime eligibilityCheckDate;
-
-    @Column(name = "eligibility_check_reason", length = 500)
-    private String eligibilityCheckReason;
 }

@@ -10,7 +10,7 @@ public record LoginRequest(
    String username,
 
    @NotBlank
-   @Size(min = 6, max = 100)
+   @Size(min = 6, max = 50)
    @Pattern(
            regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$",
            message = "Password must contain at least one letter and one number"
