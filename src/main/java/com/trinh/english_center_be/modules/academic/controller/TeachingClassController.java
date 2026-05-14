@@ -4,6 +4,7 @@ import com.trinh.english_center_be.modules.academic.dto.TeachingClassRequest;
 import com.trinh.english_center_be.modules.academic.dto.TeachingClassResponse;
 import com.trinh.english_center_be.modules.academic.service.TeachingClassService;
 import com.trinh.english_center_be.shared.response.ApiResponse;
+import com.trinh.english_center_be.shared.util.StringUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class TeachingClassController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        "Get all teaching classes successfully",
+                        StringUtil.CLASSES_RETRIEVED_SUCCESSFULLY,
                         teachingClassService.findAll()
                 )
         );
@@ -43,7 +44,7 @@ public class TeachingClassController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        "Get teaching class successfully",
+                        String.format(StringUtil.INFORMATION_RETRIEVED_SUCCESSFULLY,id),
                         teachingClassService.findById(id)
                 )
         );
@@ -57,7 +58,7 @@ public class TeachingClassController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(
                         201,
-                        "Create teaching class successfully",
+                        StringUtil.INFORMATION_CREATED_SUCCESSFULLY,
                         teachingClassService.create(request)
                 ));
     }
@@ -71,7 +72,7 @@ public class TeachingClassController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        "Update teaching class successfully",
+                        String.format(StringUtil.INFORMATION_UPDATED_SUCCESSFULLY,id),
                         teachingClassService.update(id, request)
                 )
         );
@@ -84,7 +85,7 @@ public class TeachingClassController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        "Delete teaching class successfully",
+                        StringUtil.DELETED_SUCCESSFULLY,
                         null
                 )
         );

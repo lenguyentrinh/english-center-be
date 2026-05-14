@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService{
             throw new UsernameExistsException();
         }
 
-        Role roleDefault = roleService.findRoleByRoleName(Roles.STUDENT).orElseThrow(()-> new ResourceNotFoundException(StringUtil.STUDENT_ROLE));
+        Role roleDefault = roleService.findRoleByRoleName(Roles.STUDENT).orElseThrow(()-> new ResourceNotFoundException(StringUtil.STUDENT_ROLE_NOT_FOUND ));
 
         String encodePassword = passwordEncoder.encode(request.password());
 
