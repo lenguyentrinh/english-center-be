@@ -5,18 +5,16 @@ import com.trinh.english_center_be.shared.enums.ErrorCode;
 public class InvalidCredentialException extends BusinessException {
     public InvalidCredentialException() {
         super(
-                ErrorCode.INVALID_CREDENTIAL.getCode(),
                 ErrorCode.INVALID_CREDENTIAL.getMessage(),
                 ErrorCode.INVALID_CREDENTIAL.getStatus());
     }
 
     public InvalidCredentialException(String message) {
-        super(ErrorCode.INVALID_CREDENTIAL.getCode(), message, ErrorCode.INVALID_CREDENTIAL.getStatus());
+        super(message, ErrorCode.INVALID_CREDENTIAL.getStatus());
     }
 
     public InvalidCredentialException(String message, String origin) {
         super(
-                ErrorCode.INVALID_CREDENTIAL.getCode(),
                 message,
                 ErrorCode.INVALID_CREDENTIAL.getStatus(),
                 origin
