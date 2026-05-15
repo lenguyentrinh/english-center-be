@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface UserService {
     Optional<User> findByUsername(String username);
     boolean existByUserName(String username);
-    Optional<User> findById(Long id);
-    User save(User user);
+    User findById(Long id);
+    void save(User user);
     boolean isUserActive(Long id);
 }

@@ -32,7 +32,7 @@ public class TeachingClassController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        StringUtil.CLASSES_RETRIEVED_SUCCESSFULLY,
+                        StringUtil.LIST_SUCCESSFULLY,
                         teachingClassService.findAll()
                 )
         );
@@ -44,7 +44,7 @@ public class TeachingClassController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        String.format(StringUtil.INFORMATION_RETRIEVED_SUCCESSFULLY,id),
+                        String.format(StringUtil.RETRIEVED_SUCCESSFULLY,StringUtil.CLASS, id),
                         teachingClassService.findById(id)
                 )
         );
@@ -58,7 +58,7 @@ public class TeachingClassController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(
                         201,
-                        StringUtil.INFORMATION_CREATED_SUCCESSFULLY,
+                        String.format(StringUtil.CREATED_SUCCESSFULLY, StringUtil.CLASS),
                         teachingClassService.create(request)
                 ));
     }
@@ -72,7 +72,7 @@ public class TeachingClassController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        String.format(StringUtil.INFORMATION_UPDATED_SUCCESSFULLY,id),
+                        String.format(StringUtil.UPDATED_SUCCESSFULLY,StringUtil.CLASS,id),
                         teachingClassService.update(id, request)
                 )
         );
@@ -81,11 +81,11 @@ public class TeachingClassController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-        teachingClassService.delete(id);
+        teachingClassService.softDeleteById(id);
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        StringUtil.DELETED_SUCCESSFULLY,
+                        String.format(StringUtil.DELETED_SUCCESSFULLY,StringUtil.CLASS),
                         null
                 )
         );
