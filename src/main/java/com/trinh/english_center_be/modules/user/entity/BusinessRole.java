@@ -34,10 +34,6 @@ public class BusinessRole extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Builder.Default
-    @Column(name = "active", nullable = false)
-    private Boolean active = true;
-
     @OneToMany(mappedBy = "businessRole", fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 }
