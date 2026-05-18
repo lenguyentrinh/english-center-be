@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "business_roles")
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(of = "id", callSuper = false)
 public class BusinessRole extends BaseEntity {
 
@@ -32,10 +33,6 @@ public class BusinessRole extends BaseEntity {
 
     @Column(name = "description")
     private String description;
-
-    @Builder.Default
-    @Column(name = "active", nullable = false)
-    private Boolean active = true;
 
     @OneToMany(mappedBy = "businessRole", fetch = FetchType.LAZY)
     @Builder.Default
