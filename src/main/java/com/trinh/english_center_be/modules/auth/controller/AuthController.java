@@ -4,6 +4,7 @@ import com.trinh.english_center_be.modules.auth.dto.LoginRequest;
 import com.trinh.english_center_be.modules.auth.dto.SignupRequest;
 import com.trinh.english_center_be.modules.auth.service.AuthService;
 import com.trinh.english_center_be.shared.response.ApiResponse;
+import com.trinh.english_center_be.shared.util.StringUtil;
 import jakarta.validation.Valid;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class AuthController {
         authService.signup(request);
 
         return ResponseEntity.ok()
-                .body(new ApiResponse<>(200,"Signup successful",null));
+                .body(new ApiResponse<>(200, StringUtil.SIGNUP_SUCCESS,null));
     }
 
     @PostMapping("/login")
@@ -47,7 +48,7 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new ApiResponse<>(200,"Login successful",null));
+                .body(new ApiResponse<>(200,StringUtil.LOGIN_SUCCESS,null));
     }
 
     @PostMapping("/logout")
@@ -62,6 +63,6 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new ApiResponse<>(200, "Logout successful", null));
+                .body(new ApiResponse<>(200, StringUtil.LOGOUT_SUCCESS, null));
     }
 }

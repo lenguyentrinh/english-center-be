@@ -9,19 +9,26 @@ public class StringUtil {
     public static final String DELETED_SUCCESSFULLY = "%s soft deleted successfully";
 
     // not expect
-    public static final  String ENTITY_NOT_FOUND = "%d not found";
+    public static final  String ENTITY_NOT_FOUND = "%s not found";
     public static final String ENTITY_ALREADY_EXISTS = "%s already exists by name";
 
     public static final String USER_ACCOUNT_NOT_ACTIVE = "User account is not active";
     public static final String STUDENT_ROLE_NOT_FOUND  = "Student role not found";
     public static final String CLASS_NOT_FOUND_BY_ID ="Class not found with id: %d";
 
-    //role
+
     public static final String NOT_FOUND_BY_ID="%s not found by id: %d";
+
+    public static final String NOT_FOUND_DELETED_BY_ID = "%s with  %d was deleted";
 
     //name
     public static final String ROLE="Role";
     public static final String USER="User";
     public static final String BUSINESS="Business role";
     public static final String CLASS="Class";
+
+    //auth
+    public static final String  LOGIN_SUCCESS= "Login successful";
+    public static final String  SIGNUP_SUCCESS= "Signup successful";
+    public static final String  LOGOUT_SUCCESS= "Logout successful";
 }
