@@ -1,24 +1,28 @@
 package com.trinh.english_center_be.shared;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import jakarta.persistence.Column;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@MappedSuperclass
 public class BaseEntity {
     @CreationTimestamp
-    private LocalDate createdAt;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDate updateAt;
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "boolean default false")
     private boolean isDeleted;
 }

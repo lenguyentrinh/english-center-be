@@ -28,11 +28,8 @@ public class Role extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", unique = true, length = 30)
-    private Roles role;
-
-    @Column(name = "name", nullable = false, unique = true, length = 100)
-    private String name;
+    @Column(name = "code", unique = true)
+    private Roles code;
 
     @Column(name = "description")
     private String description;

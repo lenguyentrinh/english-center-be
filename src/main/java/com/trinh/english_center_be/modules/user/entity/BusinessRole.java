@@ -1,6 +1,7 @@
 package com.trinh.english_center_be.modules.user.entity;
 
 import com.trinh.english_center_be.shared.BaseEntity;
+import com.trinh.english_center_be.shared.enums.BusinessRoles;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,8 +26,9 @@ public class BusinessRole extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 100)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "code", unique = true)
+    private BusinessRoles code;
 
     @Column(name = "description")
     private String description;
