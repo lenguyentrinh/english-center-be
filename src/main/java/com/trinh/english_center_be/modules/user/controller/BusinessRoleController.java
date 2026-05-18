@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,6 +28,7 @@ public class BusinessRoleController {
     private final BRoleService bRoleService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<BusinessRoleResponse>>> getAll() {
         return ResponseEntity.ok(
                 new ApiResponse<>(
@@ -38,6 +40,7 @@ public class BusinessRoleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<BusinessRoleResponse>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(
                 new ApiResponse<>(
@@ -49,6 +52,7 @@ public class BusinessRoleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<BusinessRoleResponse>> create(@Valid @RequestBody BusinessRoleRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(
@@ -59,6 +63,7 @@ public class BusinessRoleController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<BusinessRoleResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody BusinessRoleRequest request
@@ -73,6 +78,7 @@ public class BusinessRoleController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         bRoleService.softDeleteById(id);
         return ResponseEntity.ok(
