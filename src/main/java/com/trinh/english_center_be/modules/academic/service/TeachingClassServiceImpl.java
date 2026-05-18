@@ -81,7 +81,7 @@ public class TeachingClassServiceImpl implements TeachingClassService {
                         new ResourceNotFoundException(String.format(StringUtil.CLASS_NOT_FOUND_BY_ID ,id))
                 );
 
-        teachingClass.setDeleted(false);
+        teachingClass.setActive(false);
 
         teachingClassRepository.save(teachingClass);
     }

@@ -125,7 +125,7 @@ public class UserRoleAssignmentServiceImpl implements UserRoleAssignmentService 
         Role role = roleRepository.findById(roleId).orElseThrow(
                 () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.ROLE, roleId))
         );
-        if (role.getRole() != null) {
+        if (role.getCode() != null) {
             throw new BusinessException("System roles cannot be assigned to users", HttpStatus.BAD_REQUEST);
         }
         if (Boolean.FALSE.equals(role.getActive())) {
@@ -137,12 +137,10 @@ public class UserRoleAssignmentServiceImpl implements UserRoleAssignmentService 
     private RoleResponse toRoleResponse(Role role) {
         return RoleResponse.builder()
                 .id(role.getId())
-                .role(role.getRole())
-                .name(role.getName())
+                .code(role.getCode())
                 .description(role.getDescription())
                 .active(role.getActive())
                 .businessRoleId(role.getBusinessRole() != null ? role.getBusinessRole().getId() : null)
-                .businessRoleName(role.getBusinessRole() != null ? role.getBusinessRole().getName() : null)
                 .build();
     }
 
@@ -154,7 +152,6 @@ public class UserRoleAssignmentServiceImpl implements UserRoleAssignmentService 
 
         return BusinessRoleResponse.builder()
                 .id(br.getId())
-                .name(br.getName())
                 .description(br.getDescription())
                 .active(br.getActive())
                 .roles(roles.stream().toList())

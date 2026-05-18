@@ -24,22 +24,22 @@ public class BRoleServiceImpl implements BRoleService {
 
     @Override
     public List<BusinessRoleResponse> findAll() {
-        return bRoleRepository.findByActiveTrue().stream().map(this::toResponse).toList();
+        return bRoleRepository.findByActiveTrue().stream().map(this::toBusinessRoleResponseOverview).toList();
     }
 
     @Override
     public BusinessRoleResponse findResponseById(Long id) {
         BusinessRole businessRole = findById(id);
         if (Boolean.FALSE.equals(businessRole.getActive())) {
-            throw new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.BUSINESS, id));
+            throw new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_DELETED_BY_ID, StringUtil.BUSINESS, id));
         }
-        return toResponse(businessRole);
+        return toBusinessRoleResponseOverview(businessRole);
     }
 
     @Override
     @Transactional
     public BusinessRoleResponse create(BusinessRoleRequest businessRoleRequest) {
-        if (bRoleRepository.existsByName(businessRoleRequest.getName())) {
+        if (bRoleRepository.existsByCode(businessRoleRequest.getCode())) {
             throw new BusinessException(
                     String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.BUSINESS),
                     HttpStatus.CONFLICT
@@ -47,7 +47,7 @@ public class BRoleServiceImpl implements BRoleService {
         }
 
         BusinessRole businessRole = BusinessRole.builder()
-                .name(businessRoleRequest.getName())
+                .code(businessRoleRequest.getCode())
                 .description(businessRoleRequest.getDescription())
                 .active(businessRoleRequest.getActive() != null ? businessRoleRequest.getActive() : true)
                 .build();
@@ -73,21 +73,16 @@ public class BRoleServiceImpl implements BRoleService {
     public BusinessRoleResponse updateById(Long id, BusinessRoleRequest businessRoleRequest) {
         BusinessRole existing = findById(id);
 
-        if (businessRoleRequest.getName() != null && !businessRoleRequest.getName().equals(existing.getName())) {
-            if (bRoleRepository.existsByNameAndIdNot(businessRoleRequest.getName(), id)) {
-                throw new BusinessException(
-                        String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.BUSINESS),
-                        HttpStatus.CONFLICT
-                );
-            }
-            existing.setName(businessRoleRequest.getName());
+        if (bRoleRepository.existsByCodeAndIdNot(businessRoleRequest.getCode(), id)) {
+            throw new BusinessException(
+                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.BUSINESS),
+                    HttpStatus.CONFLICT
+            );
         }
-        if (businessRoleRequest.getDescription() != null) {
-            existing.setDescription(businessRoleRequest.getDescription());
-        }
-        if (businessRoleRequest.getActive() != null) {
-            existing.setActive(businessRoleRequest.getActive());
-        }
+
+        existing.setCode(businessRoleRequest.getCode());
+        existing.setActive(businessRoleRequest.getActive());
+        existing.setDescription(businessRoleRequest.getDescription());
 
         return toResponse(bRoleRepository.save(existing));
     }
@@ -106,21 +101,30 @@ public class BRoleServiceImpl implements BRoleService {
                         .filter(r -> Boolean.TRUE.equals(r.getActive()))
                         .map(r -> RoleResponse.builder()
                                 .id(r.getId())
-                                .role(r.getRole())
-                                .name(r.getName())
+                                .code(r.getCode())
                                 .description(r.getDescription())
                                 .active(r.getActive())
                                 .businessRoleId(businessRole.getId())
-                                .businessRoleName(businessRole.getName())
                                 .build())
                         .toList();
 
         return BusinessRoleResponse.builder()
                 .id(businessRole.getId())
-                .name(businessRole.getName())
+                .code(businessRole.getCode())
                 .description(businessRole.getDescription())
                 .active(businessRole.getActive())
                 .roles(roles)
+                .createdAt(businessRole.getCreatedAt())
+                .updateAt(businessRole.getUpdateAt())
+                .build();
+    }
+
+    private BusinessRoleResponse toBusinessRoleResponseOverview(BusinessRole businessRole) {
+        return BusinessRoleResponse.builder()
+                .id(businessRole.getId())
+                .code(businessRole.getCode())
+                .description(businessRole.getDescription())
+                .active(businessRole.getActive())
                 .createdAt(businessRole.getCreatedAt())
                 .updateAt(businessRole.getUpdateAt())
                 .build();

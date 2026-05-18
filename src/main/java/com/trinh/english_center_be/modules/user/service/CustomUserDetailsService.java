@@ -20,12 +20,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException(
-                        StringUtil.USER_NOT_FOUND
+                        String.format(StringUtil.ENTITY_NOT_FOUND, StringUtil.USER)
                 ));
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .authorities(new SimpleGrantedAuthority("ROLE_" + user.getRole().getRole().name()))
+                .authorities(new SimpleGrantedAuthority("ROLE_" + user.getRole().getCode().name()))
                 .accountLocked(user.getStatus()!=null && user.getStatus()== UserStatus.LOCKED)
                 .disabled(user.getStatus()!=null && user.getStatus() != UserStatus.ACTIVE)
                 .build();

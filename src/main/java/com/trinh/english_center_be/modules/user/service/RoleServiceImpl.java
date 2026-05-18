@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Optional<Role> findRoleByRoleName(Roles role) {
-        return roleRepository.findByRole(role);
+        return roleRepository.findByCode(role);
     }
 
     @Override
@@ -55,10 +55,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public RoleResponse create(RoleRequest roleRequest) {
-        if (roleRequest.getRole() != null) {
-            throw new BusinessException("System roles cannot be created via API", HttpStatus.BAD_REQUEST);
-        }
-        if (roleRepository.existsByName(roleRequest.getName())) {
+        if (roleRepository.existsByCode(roleRequest.getCode())) {
             throw new BusinessException(
                     String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.ROLE),
                     HttpStatus.CONFLICT
@@ -66,9 +63,8 @@ public class RoleServiceImpl implements RoleService {
         }
 
         Role role = Role.builder()
-                .name(roleRequest.getName())
+                .code(roleRequest.getCode())
                 .description(roleRequest.getDescription())
-                .active(roleRequest.getActive() != null ? roleRequest.getActive() : true)
                 .build();
 
         if (roleRequest.getBusinessRoleId() != null) {
@@ -84,7 +80,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.ROLE, id))
         );
-        if (role.getRole() != null) {
+        if (role.getCode() != null) {
             throw new BusinessException("System roles cannot be deleted", HttpStatus.BAD_REQUEST);
         }
         role.setActive(false);
@@ -98,27 +94,18 @@ public class RoleServiceImpl implements RoleService {
                 () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.ROLE, id))
         );
 
-        if (existing.getRole() != null) {
+        if (existing.getCode() != null) {
             throw new BusinessException("System roles cannot be updated via API", HttpStatus.BAD_REQUEST);
         }
 
-        if (roleRequest.getName() != null && !roleRequest.getName().equals(existing.getName())) {
-            if (roleRepository.existsByNameAndIdNot(roleRequest.getName(), id)) {
+        if (roleRequest.getCode() != null) {
+            if (roleRepository.existsByCodeAndIdNot(roleRequest.getCode(), id)) {
                 throw new BusinessException(
                         String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.ROLE),
                         HttpStatus.CONFLICT
                 );
             }
-            existing.setName(roleRequest.getName());
-        }
-        if (roleRequest.getDescription() != null) {
-            existing.setDescription(roleRequest.getDescription());
-        }
-        if (roleRequest.getActive() != null) {
-            existing.setActive(roleRequest.getActive());
-        }
-        if (roleRequest.getBusinessRoleId() != null) {
-            existing.setBusinessRole(resolveActiveBusinessRole(roleRequest.getBusinessRoleId()));
+            existing.setCode(roleRequest.getCode());
         }
 
         return toResponse(roleRepository.save(existing));
@@ -135,12 +122,11 @@ public class RoleServiceImpl implements RoleService {
     private RoleResponse toResponse(Role role) {
         return RoleResponse.builder()
                 .id(role.getId())
-                .role(role.getRole())
-                .name(role.getName())
+                .code(role.getCode())
                 .description(role.getDescription())
                 .active(role.getActive())
                 .businessRoleId(role.getBusinessRole() != null ? role.getBusinessRole().getId() : null)
-                .businessRoleName(role.getBusinessRole() != null ? role.getBusinessRole().getName() : null)
+                .businessRoleCode(role.getBusinessRole() != null ? role.getBusinessRole().getCode() : null)
                 .build();
     }
 }
