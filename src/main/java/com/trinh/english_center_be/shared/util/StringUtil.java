@@ -31,7 +31,8 @@ public class StringUtil {
 
     //field
     public static final String CODE_FIELD = "role";
-    public static final String NAME_FIELD = "name";
+    public static final String USERNAME_FIELD = "username";
+    public static final String EMAIL_FIELD = "email";
 
     //auth
     public static final String  LOGIN_SUCCESS= "Login successful";
