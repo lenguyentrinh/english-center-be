@@ -31,7 +31,7 @@ public class BRoleServiceImpl implements BRoleService {
     public BusinessRoleResponse findResponseById(Long id) {
         BusinessRole businessRole = findById(id);
         if (Boolean.FALSE.equals(businessRole.getActive())) {
-            throw new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_DELETED_BY_ID, StringUtil.BUSINESS, id));
+            throw new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_DELETED_BY_ID, StringUtil.BUSINESS_ROLE, id));
         }
         return toBusinessRoleResponseOverview(businessRole);
     }
@@ -41,7 +41,7 @@ public class BRoleServiceImpl implements BRoleService {
     public BusinessRoleResponse create(BusinessRoleRequest businessRoleRequest) {
         if (bRoleRepository.existsByCode(businessRoleRequest.getCode())) {
             throw new BusinessException(
-                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.BUSINESS),
+                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.BUSINESS_ROLE, StringUtil.CODE_FIELD),
                     HttpStatus.CONFLICT
             );
         }
@@ -58,7 +58,7 @@ public class BRoleServiceImpl implements BRoleService {
     @Override
     public BusinessRole findById(Long id) {
         return bRoleRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.BUSINESS, id))
+                () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.BUSINESS_ROLE, id))
         );
     }
 
@@ -75,7 +75,7 @@ public class BRoleServiceImpl implements BRoleService {
 
         if (bRoleRepository.existsByCodeAndIdNot(businessRoleRequest.getCode(), id)) {
             throw new BusinessException(
-                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.BUSINESS),
+                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.BUSINESS_ROLE, StringUtil.CODE_FIELD),
                     HttpStatus.CONFLICT
             );
         }
