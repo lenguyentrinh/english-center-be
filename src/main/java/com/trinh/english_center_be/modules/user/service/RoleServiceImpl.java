@@ -47,7 +47,7 @@ public class RoleServiceImpl implements RoleService {
                 () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.ROLE, id))
         );
         if (Boolean.FALSE.equals(role.getActive())) {
-            throw new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.ROLE, id));
+            throw new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_DELETED_BY_ID, StringUtil.ROLE, id));
         }
         return toResponse(role);
     }
@@ -57,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleResponse create(RoleRequest roleRequest) {
         if (roleRepository.existsByCode(roleRequest.getCode())) {
             throw new BusinessException(
-                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.ROLE),
+                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.ROLE, StringUtil.CODE_FIELD),
                     HttpStatus.CONFLICT
             );
         }
@@ -80,9 +80,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.ROLE, id))
         );
-        if (role.getCode() != null) {
-            throw new BusinessException("System roles cannot be deleted", HttpStatus.BAD_REQUEST);
-        }
+
         role.setActive(false);
         roleRepository.save(role);
     }
@@ -94,19 +92,17 @@ public class RoleServiceImpl implements RoleService {
                 () -> new ResourceNotFoundException(String.format(StringUtil.NOT_FOUND_BY_ID, StringUtil.ROLE, id))
         );
 
-        if (existing.getCode() != null) {
-            throw new BusinessException("System roles cannot be updated via API", HttpStatus.BAD_REQUEST);
+        if (roleRepository.existsByCodeAndIdNot(roleRequest.getCode(), id)) {
+            throw new BusinessException(
+                    String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.ROLE, StringUtil.CODE_FIELD),
+                    HttpStatus.CONFLICT
+            );
         }
+        existing.setCode(roleRequest.getCode());
+        existing.setDescription(roleRequest.getDescription());
 
-        if (roleRequest.getCode() != null) {
-            if (roleRepository.existsByCodeAndIdNot(roleRequest.getCode(), id)) {
-                throw new BusinessException(
-                        String.format(StringUtil.ENTITY_ALREADY_EXISTS, StringUtil.ROLE),
-                        HttpStatus.CONFLICT
-                );
-            }
-            existing.setCode(roleRequest.getCode());
-        }
+        BusinessRole businessRole = resolveActiveBusinessRole(roleRequest.getBusinessRoleId());
+        existing.setBusinessRole(businessRole);
 
         return toResponse(roleRepository.save(existing));
     }
@@ -114,7 +110,7 @@ public class RoleServiceImpl implements RoleService {
     private BusinessRole resolveActiveBusinessRole(Long businessRoleId) {
         BusinessRole businessRole = bRoleService.findById(businessRoleId);
         if (Boolean.FALSE.equals(businessRole.getActive())) {
-            throw new BusinessException("Business role is inactive", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(String.format(StringUtil.OBJECT_INACTIVE, StringUtil.BUSINESS_ROLE), HttpStatus.BAD_REQUEST);
         }
         return businessRole;
     }

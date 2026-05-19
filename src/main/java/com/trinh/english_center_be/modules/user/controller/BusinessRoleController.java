@@ -33,7 +33,7 @@ public class BusinessRoleController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        String.format(StringUtil.LIST_SUCCESSFULLY, StringUtil.BUSINESS),
+                        String.format(StringUtil.LIST_SUCCESSFULLY, StringUtil.BUSINESS_ROLE),
                         bRoleService.findAll()
                 )
         );
@@ -45,7 +45,7 @@ public class BusinessRoleController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        String.format(StringUtil.RETRIEVED_SUCCESSFULLY, StringUtil.BUSINESS, id),
+                        String.format(StringUtil.RETRIEVED_SUCCESSFULLY, StringUtil.BUSINESS_ROLE, id),
                         bRoleService.findResponseById(id)
                 )
         );
@@ -57,7 +57,7 @@ public class BusinessRoleController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(
                         201,
-                        String.format(StringUtil.CREATED_SUCCESSFULLY, StringUtil.BUSINESS),
+                        String.format(StringUtil.CREATED_SUCCESSFULLY, StringUtil.BUSINESS_ROLE),
                         bRoleService.create(request)
                 ));
     }
@@ -71,7 +71,7 @@ public class BusinessRoleController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        String.format(StringUtil.UPDATED_SUCCESSFULLY, StringUtil.BUSINESS, id),
+                        String.format(StringUtil.UPDATED_SUCCESSFULLY, StringUtil.BUSINESS_ROLE, id),
                         bRoleService.updateById(id, request)
                 )
         );
@@ -84,7 +84,7 @@ public class BusinessRoleController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         200,
-                        String.format(StringUtil.DELETED_SUCCESSFULLY, StringUtil.BUSINESS),
+                        String.format(StringUtil.DELETED_SUCCESSFULLY, StringUtil.BUSINESS_ROLE),
                         null
                 )
         );
