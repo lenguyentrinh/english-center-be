@@ -10,5 +10,5 @@ public interface TeachingClassService {
     public TeachingClassResponse findById(Long id);
     public TeachingClassResponse create(TeachingClassRequest request);
     public TeachingClassResponse update(Long id, TeachingClassRequest request);
-    public void delete(Long id);
+    public void softDeleteById(Long id);
 }

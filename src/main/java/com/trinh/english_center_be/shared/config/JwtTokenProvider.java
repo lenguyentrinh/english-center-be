@@ -5,18 +5,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value;
-
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+
+    private static final long REFRESH_THRESHOLD_MS = 5 * 60 * 1000L;
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
@@ -27,7 +28,13 @@ public class JwtTokenProvider {
 
     @PostConstruct
     public void init() {
-        signingKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        if (keyBytes.length < 32) {
+            byte[] padded = new byte[32];
+            System.arraycopy(keyBytes, 0, padded, 0, keyBytes.length);
+            keyBytes = padded;
+        }
+        signingKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(Authentication authentication) {
@@ -36,7 +43,43 @@ public class JwtTokenProvider {
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
                 .orElse("");
+        return buildToken(username, role);
+    }
 
+    public String refreshToken(String token) {
+        Claims claims = parseClaims(token);
+        String username = claims.getSubject();
+        String role = claims.get("role", String.class);
+        return buildToken(username, role != null ? role : "");
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            parseClaims(token);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public boolean shouldRefreshToken(String token) {
+        try {
+            Date expiration = parseClaims(token).getExpiration();
+            return expiration.getTime() - System.currentTimeMillis() < REFRESH_THRESHOLD_MS;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public String getUsernameFromToken(String token) {
+        return parseClaims(token).getSubject();
+    }
+
+    public String getRoleFromToken(String token) {
+        return parseClaims(token).get("role", String.class);
+    }
+
+    private String buildToken(String username, String role) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
@@ -50,33 +93,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(signingKey)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
-    public String getUsernameFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
+    private Claims parseClaims(String token) {
+        return Jwts.parserBuilder()
                 .setSigningKey(signingKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        return claims.getSubject();
-    }
-
-    public String getRoleFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(signingKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.get("role", String.class);
     }
 }

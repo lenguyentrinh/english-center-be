@@ -1,8 +1,8 @@
 package com.trinh.english_center_be.modules.user.entity;
 
 import com.trinh.english_center_be.shared.BaseEntity;
+import com.trinh.english_center_be.shared.enums.BusinessRoles;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "business_roles")
@@ -20,7 +19,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(of = "id", callSuper = false)
 public class BusinessRole extends BaseEntity {
 
@@ -28,16 +27,14 @@ public class BusinessRole extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 100)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "code", unique = true)
+    private BusinessRoles code;
 
     @Column(name = "description")
     private String description;
 
-    @Builder.Default
-    @Column(name = "active", nullable = false)
-    private Boolean active = true;
-
     @OneToMany(mappedBy = "businessRole", fetch = FetchType.LAZY)
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 }

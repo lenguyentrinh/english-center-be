@@ -7,7 +7,6 @@ public class DatabaseException extends BusinessException {
 
     public DatabaseException() {
         super(
-                ErrorCode.DATABASE_ERROR.getCode(),
                 ErrorCode.DATABASE_ERROR.getMessage(),
                 ErrorCode.DATABASE_ERROR.getStatus()
         );
@@ -15,7 +14,6 @@ public class DatabaseException extends BusinessException {
 
     public DatabaseException(String message, HttpStatus status) {
         super(
-                ErrorCode.DATABASE_ERROR.getCode(),
                 message,
                 status
         );

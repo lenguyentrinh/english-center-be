@@ -74,14 +74,16 @@ public class TeachingClassServiceImpl implements TeachingClassService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void softDeleteById(Long id) {
 
         TeachingClass teachingClass = teachingClassRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(String.format(StringUtil.CLASS_NOT_FOUND_BY_ID ,id))
                 );
 
-        teachingClassRepository.delete(teachingClass);
+        teachingClass.setActive(false);
+
+        teachingClassRepository.save(teachingClass);
     }
 
     private TeachingClassResponse toResponse(TeachingClass teachingClass) {

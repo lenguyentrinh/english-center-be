@@ -25,11 +25,7 @@ public class GlobalExceptionHandler {
             BusinessException ex,
             HttpServletRequest request
     ) {
-
-        log.error("BusinessException: {}", ex.getMessage());
-
         ErrorResponse response = ErrorResponse.builder()
-                .code(ex.getCode())
                 .status(ex.getStatus())
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
@@ -50,7 +46,6 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(fe -> fieldErrors.put(fe.getField(), fe.getDefaultMessage()));
 
         ErrorResponse response = ErrorResponse.builder()
-                .code(error.getCode())
                 .status(error.getStatus())
                 .message(error.getMessage())
                 .errors(fieldErrors)
@@ -70,7 +65,6 @@ public class GlobalExceptionHandler {
         ErrorCode error = ErrorCode.FORBIDDEN;
 
         ErrorResponse response = ErrorResponse.builder()
-                .code(error.getCode())
                 .status(error.getStatus())
                 .message("Permission denied: your role is not allowed for this action")
                 .timestamp(LocalDateTime.now())
@@ -86,13 +80,9 @@ public class GlobalExceptionHandler {
             Exception ex,
             HttpServletRequest request
     ) {
-
-        log.error("Unhandled exception: ", ex);
-
         ErrorCode error = ErrorCode.INTERNAL_SERVER_ERROR;
 
         ErrorResponse response = ErrorResponse.builder()
-                .code(error.getCode())
                 .status(error.getStatus())
                 .message(error.getMessage())
                 .timestamp(LocalDateTime.now())
