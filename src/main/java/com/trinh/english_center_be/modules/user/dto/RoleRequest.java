@@ -10,13 +10,11 @@ import lombok.Setter;
 @Setter
 public class RoleRequest {
 
-    @NotNull(message = "Name must not be null")
+    @NotNull(message = "Code must not be null")
     private Roles code;
 
     @Size(max = 500, message = "Description must be at most 500 characters")
     private String description;
-
-    private Boolean active;
 
     private Long businessRoleId;
 }
